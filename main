@@ -1,1 +1,60 @@
+# Гра "Хрестики-нулики"
+
+board = [" " for _ in range(9)]
+
+def show_board():
+    print()
+    for row in range(3):
+        print(" | ".join(board[row * 3:row * 3 + 3]))
+        if row < 2:
+            print("--+---+--")
+    print()
+
+def check_winner():
+    wins = [
+        (0, 1, 2), (3, 4, 5), (6, 7, 8),
+        (0, 3, 6), (1, 4, 7), (2, 5, 8),
+        (0, 4, 8), (2, 4, 6)
+    ]
+    for a, b, c in wins:
+        if board[a] == board[b] == board[c] != " ":
+            return board[a]
+    return None
+
+def play():
+    player = "X"
+
+    print("Ласкаво просимо до гри «Хрестики-нулики»!")
+    print("Щоб зробити хід, введіть число від 1 до 9.")
+
+    while True:
+        show_board()
+        choice = input(f"Гравець {player}, ваш хід: ")
+
+        if not choice.isdigit() or not 1 <= int(choice) <= 9:
+            print("Введіть число від 1 до 9.")
+            continue
+
+        position = int(choice) - 1
+
+        if board[position] != " ":
+            print("Ця клітинка вже зайнята. Спробуйте ще раз.")
+            continue
+
+        board[position] = player
+
+        if check_winner():
+            show_board()
+            print(f"Переміг гравець {player}!")
+            break
+
+        if " " not in board:
+            show_board()
+            print("Нічия!")
+            break
+
+        player = "O" if player == "X" else "X"
+
+if __name__ == "__main__":
+    play()
 
